@@ -1,4 +1,4 @@
-
+//Just adding something to save
 const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
 const min = 2;
 let primes = [];
