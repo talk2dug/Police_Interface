@@ -238,11 +238,9 @@ function interval(func, wait, times) {
     }(wait, times);
     setTimeout(interv, wait);
 };
-
 function getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
 }
-
 function calculateHeading(lon, lat) {
     var Heading = 0;
     var angles = require('angles');
@@ -253,18 +251,12 @@ function calculateHeading(lon, lat) {
     return Heading;
 }
     var startMoving = null;
-
     function sendGPS() {
         io.emit('state', GPSarray);
         io.emit('heading', headingDir);
     }
-
-
     io.on('disconnect', function(socket) {})
     io.emit('ip', ip)
-
-
-
 });
 module.exports = {
     app: app,
