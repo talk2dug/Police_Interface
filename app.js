@@ -147,8 +147,8 @@ gps.on('GGA', function(data) {
     }
 
     //mainServer.emit('gps', GPSarray)
-    dreamHost.emit('gpsData', GPSarray)
-    io.emit('state', GPSarray);
+    //dreamHost.emit('gpscarGPS', GPSarray)
+    mainServer.emit('gpscarGPS', GPSarray);
 });
 var os = require('os');
 var ifaces = os.networkInterfaces();
