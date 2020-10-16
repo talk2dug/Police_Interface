@@ -35,3 +35,66 @@
   margin-top: 15px;
 
 }
+.modal-dialog{
+  min-width: 500px;
+  min-height: 300;
+  max-width:500px;
+  max-height:300px;
+
+
+}
+.containerNumberPad{
+  min-width: 480px;
+  min-height: 350;
+  max-width:350px;
+  max-height:480px;
+
+
+}
+.modal-body{
+  min-width: 400px;
+
+  max-width:400px;
+
+
+
+}
+.numberpad{
+  background: grey;
+  height:80px;
+  margin: 3px;
+  width: 25%;
+
+
+  font-size: 50px;
+}
+.keyaction{
+
+  font-size: 30px;
+
+}
+
+container2 {
+  width: 100%;
+  border: 1px solid black;
+  display: inline-block;
+}
+block {
+  display: inline-block;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  width: calc(33% - 10px);
+  height: 100px;
+  margin: 3px;
+  background: grey;
+  float: right;
+  position: relative;
+}
+block[v2] {
+  height: 210px;
+  position: relative;
+}
+block[h2] {
+  width: calc(45% - 10px);
+  position: relative;
+}

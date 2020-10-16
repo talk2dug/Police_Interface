@@ -5,6 +5,8 @@ Number.prototype.pad = function(size) {
     }
     return s;
 }
+
+var badgeNumber = "";
 function sendTime(){
 	var date = moment.utc().format('YYYY-MM-DD HH:mm:ss');
 
@@ -16,6 +18,7 @@ function sendTime(){
 
 }
 var RallyComputer = io('//192.168.196.74:3000');
+var mainServer = io('//192.168.196.163:3000');
 $(function() {
     $('#mainDIV').html(maindivHomeHTML);
 
@@ -63,7 +66,38 @@ $(function() {
                 break;
         }
     });
+    $(".numberpad").on("click", function(){
+        if($(this).text() ==='CLOSE'){
 
+            $('#exampleModal').modal('hide');
+
+        }
+        else if($(this).text() ==='CLEAR'){
+            badgeTyped = ""
+            $('#badgeNumber').val(badgeTyped)
+
+        }
+        else if($(this).text() ==='DELETE'){
+            var badgeTyped = $('#badgeNumber').val()
+        badgeTyped = badgeTyped.substring(0, badgeTyped.length - 1);
+        $('#badgeNumber').val(badgeTyped)
+
+        }
+        else if($(this).text() ==='ENTER'){
+            badgeNumber = $('#badgeNumber').val()
+            mainServer.emit('badgeNumber',badgeNumber )
+        $('#badgeNumber').val('')
+        $('#exampleModal').modal('hide');
+        
+
+        }
+       else{
+        var badgeTyped = $('#badgeNumber').val()
+        badgeTyped = badgeTyped + $(this).text()
+        $('#badgeNumber').val(badgeTyped)
+        console.log($(this).text());
+    }
+      });
 });
 
 
@@ -71,7 +105,7 @@ $(function() {
 
 $(document).click(function(e) {
     if(e.target.localName == "button"){
-        console.log("BUTTON")
+        //console.log("BUTTON")
         console.log(e)
         var buttonID = $(e.target).attr('id')
         var innerText = e.target.innerHTML
@@ -85,10 +119,12 @@ $(document).click(function(e) {
                 RallyComputer.emit('actions', 'startcall' )
             case 'signIn':
                 $('.status').text('SIGNING IN')
-                RallyComputer.emit('actions', 'signin')
-            case 'download':
+                $('#exampleModal').modal('show');
+                
+                //RallyComputer.emit('actions', 'signin')
+            case 'endShift':
                 $('.status').text('BACKING UP DATA')
-                RallyComputer.emit('actions', 'download')
+                RallyComputer.emit('actions', 'endShift')
         }
     }
 

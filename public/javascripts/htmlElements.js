@@ -86,7 +86,88 @@ var maindivHomeHTML = "<div class='card text-center'>"+
 						"<div class='card-footer text-muted'>"+
 							"All 7 cameras online"+
 						"</div>"+
-					"</div>"	
+					"</div>"+
+					"<div class='modal fade' id='exampleModal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>"+
+				   "<div class='modal-dialog modal-lg'>"+
+					 "<div class='modal-content modalWidth'>"+
+					 "<div class='modal-header'>"+
+					 "<h5>Badge</h5>"+
+					 "<input id='badgeNumber' class='form-control form-control-md' type='text' placeholder='Type Badge Number'></input>"+
+					 "</div>"+
+					   "<div class='modal-body'>"+
+					   "<div class='container containerNumberPad'>"+
+					   "<div class='row'>"+
+						 "<div class='col-sm numberpad' data='7'>"+
+						   "7"+
+						"</div>"+
+						 "<div class='col-sm numberpad' data='8'>"+
+						   "8"+
+						 "</div>"+
+						 "<div class='col-sm numberpad' data='9'>"+
+						   "9"+
+						 "</div>"+
+						 "<div class='col-sm numberpad keyaction' data='CLOSE'>"+
+						   "CLOSE"+
+						 "</div>"+
+					   "</div>"+
+					   "<div class='row'>"+
+						 "<div class='col-sm numberpad' data='4'>"+
+						   "4"+
+						"</div>"+
+						 "<div class='col-sm numberpad' data='5'>"+
+						   "5"+
+						 "</div>"+
+						 "<div class='col-sm numberpad' data='6'>"+
+						   "6"+
+						 "</div>"+
+						 "<div class='col-sm numberpad keyaction' data='CLR'>"+
+						   "CLEAR"+
+						 "</div>"+
+					   "</div>"+
+					   "<div class='row'>"+
+						 "<div class='col-sm numberpad' data='1'>"+
+						   "1"+
+						"</div>"+
+						 "<div class='col-sm numberpad' data='2'>"+
+						   "2"+
+						 "</div>"+
+						 "<div class='col-sm numberpad' data='3'>"+
+						   "3"+
+						 "</div>"+
+						 "<div class='col-sm numberpad keyaction' data='DEL'>"+
+						   "DELETE"+
+						 "</div>"+
+					   "</div>"+
+					   "<div class='row'>"+
+						 
+						 "<div class='col-sm numberpad' data='*'>"+
+						   "*"+
+						 "</div>"+
+						  
+						 "<div class='col-sm numberpad' data='0'>"+
+						   "0"+
+						 "</div>"+
+						 "<div class='col-md numberpad' data='#'>"+
+						   "#"+
+						 "</div>"+
+						 "<div class='col-sm numberpad keyaction' data='ENTER'>"+
+						   "ENTER"+
+						 "</div>"+
+					   "</div>"+
+					 "</div>"+
+					   
+
+
+
+
+
+
+
+					   "</div>"+
+					 
+					 "</div>"+
+				   "</div>"+
+				   "</div>"	
 
 
 
@@ -116,3 +197,4 @@ var maincontainer = "<div class='container'>" +
 			"</div>" +
     	"</div>" +
 "</div>"
+var keypadHTML

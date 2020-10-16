@@ -169,7 +169,12 @@ Object.keys(ifaces).forEach(function(ifname) {
 });
 
 var startloggingCall
+socket.on("badgeNumber", function(data){
 
+        console.log(data)
+        mainServer.emit('badgeNumber', data);
+
+})
 
 socket.on("buttonClicked", function(data){
     switch (data) {
@@ -187,7 +192,7 @@ socket.on("buttonClicked", function(data){
             break;
         case 'endCall':
             mainServer.emit('action', 'endCall')
-            mainServer.emit('action', 'download')
+            //mainServer.emit('action', 'download')
             break;
         case 'DWI':
         //mainServer.emit('action', 'DWI')
@@ -201,19 +206,19 @@ socket.on("buttonClicked", function(data){
             mainServer.emit('action', 'startCall')
             break;
         case 'signIn':
-            mainServer.emit('settings', 'signIn')
+            mainServer.emit('action', 'signIn')
             break;
         case 'startShift':
-            mainServer.emit('settings', 'startShift')
+            mainServer.emit('action', 'startShift')
             break;
         case 'endShift':
-            mainServer.emit('settings', 'endShift')
+            mainServer.emit('action', 'download')
             break;
         case 'logOut':
-            mainServer.emit('settings', 'logOut')
+            mainServer.emit('action', 'logOut')
             break;
         case 'ejectDisk':
-            mainServer.emit('settings', 'ejectDisk')
+            mainServer.emit('action', 'ejectDisk')
             break;
         case 'settings':
             mainServer.emit('settings', 'settings')
