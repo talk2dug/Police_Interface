@@ -1,15 +1,11 @@
 var exec = require('child_process').exec;
 var fs = require('fs');
-var tripA = [];
-var tripB = [];
-var distanceTripA = 0;
-var distanceTripB = 0;
+
 var GPSarray = {};
-var logSensors = {}
-var gpsLogs = [];
+
 var prevLAT;
 var prevLAT;
-var headingDir
+
 var ip = "";
 var express = require('express');
 var path = require('path');
@@ -22,17 +18,22 @@ var database = require('./routes/database');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var sendGPS = 0;
 //Add socket client here.
-var mainServer = require('socket.io-client')('http://192.168.196.163:3000');
-var dreamHost = require('socket.io-client')('http://192.168.196.123:3000');
+var mainServer = require('socket.io-client')('http://10.10.10.3:3000');
+
 mainServer.on('connect', function(){
 console.log("CONNECTED");
 
 
 });
 mainServer.on('event', function(data){});
-mainServer.on('disconnect', function(){});
+mainServer.on('disconnect', function(){
 
+mainServer.removeAllListeners();
+
+});
+var recordStat = 0
 var geolib = require('geolib');
 var mongoose = require('mongoose');
 var MongoClient = require('mongodb').MongoClient;
@@ -95,33 +96,10 @@ port.on('error', function(err) {
 
 
 
-function parseGPS(data) {
-    var lat = data.state.lat;
-    var lon = data.state.lon;
-    //console.log(lat)
-    if (lat != null) {
-        tripA.push({latitude: lat,longitude: lon});
-        tripB.push({latitude: lat,longitude: lon})
-    }
-    if (tripA.length === 4) {
-        var distance = geolib.getPathLength(tripA, [10, 5]);
-        distance = geolib.convertUnit('mi', distance, 4)
-        distanceTripA = distanceTripA + distance;
-        io.emit('distanceA', distanceTripA);
-        tripA.length = 0;
-    }
-    if (tripB.length === 4) {
-        var distance = geolib.getPathLength(tripB, [10, 5]);
-        distance = geolib.convertUnit('mi', distance, 4)
-        distanceTripB = distanceTripB + distance;
-        io.emit('distanceB', distanceTripB);
-        tripB.length = 0;
-    }
-}
 const parser = port.pipe(new Readline({ delimiter: '\r\n' }))
 parser.on('data', function(data) {
     gps.update(data);
-    parseGPS(gps);
+  
 })
 function calculateHeading(lon, lat) {
     var Heading = 0;
@@ -133,96 +111,73 @@ function calculateHeading(lon, lat) {
     return Heading;
 }
 gps.on('GGA', function(data) {
+    if (!data.time)
+    return;
+    var exec = require('child_process').exec;
+  exec('date -s "' + data.time.toString() + '"', function(error, stdout, stderr) {
+    if (error) throw error;
+    // Clock should be set now, exit
+    //console.log("Set time to " + data.time.toString());
+    //process.exit();
+  });
     var headingDir = calculateHeading(data.lon, data.lat)
     GPSarray['lon'] = data.lon
     GPSarray['lat'] = data.lat
     GPSarray['heading'] = headingDir
+    GPSarray['satsActive'] = data.satelites
+    GPSarray['alt'] = data.alt
+    GPSarray['time'] = data.time
+    GPSarray['quality'] = data.quality
+
     if (gps.state.speed != null) {GPSarray['speed'] = gps.state.speed.toFixed(2)}
     if (gps.state.speed == null) {GPSarray['speed'] = 0}
-		GPSarray['time'] = data.time
-		if (data.lon === null) {
-		var pos = {'lon': '-76.558225','lat': '38.06033333333333'}
-    } else {
-        var pos = {'lon': data.lon,'lat': data.lat}
+    //console.log(GPSarray)
+    mainServer.emit('state',GPSarray)
+    if(sendGPS===1){
+        mainServer.emit('gpscarGPS', GPSarray)
     }
-
-    //mainServer.emit('gps', GPSarray)
-    //dreamHost.emit('gpscarGPS', GPSarray)
-    mainServer.emit('gpscarGPS', GPSarray);
+io.emit('state',GPSarray )
+io.emit('recordingStatus',recordStat )
 });
-var os = require('os');
-var ifaces = os.networkInterfaces();
-var stopType = ''
+
+
+
 io.on('connection', function(socket) {
-Object.keys(ifaces).forEach(function(ifname) {
-    var alias = 0;
-    ifaces[ifname].forEach(function(iface) {
-        console.log(ifname)
-        if ('IPv4' !== iface.family || iface.internal !== false) {
-            return;
-        }
-        if (alias >= 1) {} else {
-            ip = iface.address
-        }
-        ++alias;
-    });
-});
 
-var startloggingCall
-socket.on("badgeNumber", function(data){
 
+    mainServer.on('recordingStatus', function(data){
+        recordStat = data;
+        console.log("data")
         console.log(data)
-        mainServer.emit('badgeNumber', data);
+        
 
 })
+
 
 socket.on("buttonClicked", function(data){
     switch (data) {
         case 'shotsFired':
-            mainServer.emit('action', 'shotsFired')
-            mainServer.emit('action', 'startCall')
+            sendGPS = 1;
             break;
         case 'trafficStop':
-            //mainServer.emit('action', 'trafficStop')
-            mainServer.emit('action', 'startCall')
+            sendGPS = 1;
             break;
         case 'radioCall':
-            //mainServer.emit('action', 'radioCall')
-            mainServer.emit('action', 'startCall')
+            sendGPS = 1;
             break;
         case 'endCall':
-            mainServer.emit('action', 'endCall')
-            //mainServer.emit('action', 'download')
+            sendGPS = 0;
             break;
         case 'DWI':
-        //mainServer.emit('action', 'DWI')
-        mainServer.emit('action', 'startCall')
+        sendGPS = 1;
             break;
-        case 'someThing':
-            mainServer.emit('action', 'someThing')
+        case 'something':
+            sendGPS = 1;
             break;
         case 'genericFlag':
-            mainServer.emit('action', 'genericFlag')
-            mainServer.emit('action', 'startCall')
+            sendGPS = 1;
             break;
-        case 'signIn':
-            mainServer.emit('action', 'signIn')
-            break;
-        case 'startShift':
-            mainServer.emit('action', 'startShift')
-            break;
-        case 'endShift':
-            mainServer.emit('action', 'download')
-            break;
-        case 'logOut':
-            mainServer.emit('action', 'logOut')
-            break;
-        case 'ejectDisk':
-            mainServer.emit('action', 'ejectDisk')
-            break;
-        case 'settings':
-            mainServer.emit('settings', 'settings')
-            break;
+
         default:
             break;
     }
@@ -243,23 +198,9 @@ function interval(func, wait, times) {
     }(wait, times);
     setTimeout(interv, wait);
 };
-function getKeyByValue(object, value) {
-    return Object.keys(object).find(key => object[key] === value);
-}
-function calculateHeading(lon, lat) {
-    var Heading = 0;
-    var angles = require('angles');
-    Heading = GPS.Heading(prevLAT, prevLAT, lat, lon);
-    Heading = Heading.toFixed(0)
-    prevLAT = lat;
-    prevLON = lon;
-    return Heading;
-}
-    var startMoving = null;
-    function sendGPS() {
-        io.emit('state', GPSarray);
-        io.emit('heading', headingDir);
-    }
+
+
+    
     io.on('disconnect', function(socket) {})
     io.emit('ip', ip)
 });

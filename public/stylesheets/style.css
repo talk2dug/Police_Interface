@@ -4,6 +4,7 @@
   min-height: 480;
   max-width:800px;
   max-height:480px;
+  overflow: hidden;
 }
 .card {
   background-color: transparent;
@@ -73,7 +74,18 @@
   font-size: 30px;
 
 }
+.btn-block{
+  height: 80px;
+  background: red;
 
+
+}
+.btn-block-settings{
+  height: 80px;
+  background: grey;
+
+
+}
 container2 {
   width: 100%;
   border: 1px solid black;

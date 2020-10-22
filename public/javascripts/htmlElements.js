@@ -7,19 +7,17 @@ var tabs = "<div id='tab-example'>" +
 					"<div id='landingPage'></div>" +
 				"</div>" +
 			"</div>"
-var landingLeft = "<button type='button' class='btn-secondary btn btn-block' id='signIn'>Sign In</button>"+
-"<button type='button' class='btn-secondary btn btn-block' id='startShift'>Start Shift</button>"+
-"<button type='button' class='btn-secondary btn btn-block' id='endShift'>End Shift</button>"+
-"<button type='button' class='btn-secondary btn btn-block' id='logOut'>Log Out</button>"+
-"<button type='button' class='btn-secondary btn btn-block' id='ejectDisk'>Eject Disk</button>"+
-"<button type='button' class='btn-secondary btn btn-block' id='Settings'>Settings</button>"
+ 
+			
+			var landingLeft = "<button type='button' class='btn-secondary btn btn-block btn-block-settings' id='settings'>Settings</button>"
+var landingLeft2 = "<button type='button' class='btn-secondary btn btn-block' id='something'>Something</button>"+
+"<button type='button' class='btn-secondary btn btn-block'' id='shotsFired'>Shots Fired</button>"+
+"<button type='button' class='btn-secondary btn btn-block' id='genericFlag'>Generic Flag</button>"+
+"<button type='button' class='btn-secondary btn btn-block btn-block-settings' id='settings'>Settings</button>"
 var landingRight = "<button type='button' class='btn-secondary btn btn-block' id='trafficStop'>Traffic Stop</button>"+
 "<button type='button' class='btn-secondary btn btn-block' id='DWI'>DWI</button>"+
 "<button type='button' class='btn-secondary btn btn-block' id='radioCall'>Radio Call</button>"+
-"<button type='button' class='btn-secondary btn btn-block' id='something'>Something</button>"+
-"<button type='button' class='btn-secondary btn btn-block'' id='shotsFired'>Shots Fired</button>"+
-"<button type='button' class='btn-secondary btn btn-block' id='genericFlag'>Generic Flag</button>"+
-"<button type='button' class='btn-secondary btn btn-block' id='endCall'>End Call</button>"
+"<button type='button' class='btn-secondary btn btn-block btn-block-settings' id='endCall'>End Call</button>"
 
 var bootstrapHTML = "<div class='container'>"+
 "<div class='row'>"+
@@ -49,12 +47,12 @@ var bootstrapHTML = "<div class='container'>"+
 
 var maindivHomeHTML = "<div class='card text-center'>"+
 						"<div class='card-header'>"+
-							"<h3>SPD In-Car System</h3>"+
+							"<h3 id='headerTitle'>SPD In-Car System</h3>"+
 						"</div>"+
 						"<div class='row'>"+
 							"<div class='col'>"+
 								"<div class='sidebar-sticky pt-3'>"+
-									"<ul class='list-group flex-column' id='serverTypesUL'>"+
+									"<ul class='list-group flex-column' id='serverTypesULLeft'>"+
 									landingLeft +
 									"</ul>"+
 								"</div>"+
@@ -66,7 +64,7 @@ var maindivHomeHTML = "<div class='card text-center'>"+
 										"<div class='card-body card-body-inner'>"+
 										
 										"</br>"+
-										"<h4 class='stauts'>DUI STOP</h4>"+
+										"<h2 class='stauts' id='status'>Not Logged In</h2>"+
 										
 										"</br>"+
 										
@@ -77,17 +75,30 @@ var maindivHomeHTML = "<div class='card text-center'>"+
 							"</div>"+
 							"<div class='col'>"+
 								"<div class='sidebar-sticky pt-3'>"+
-									"<ul class='list-group flex-column' id='serverTypesUL'>"+
-										landingRight +
+									"<ul class='list-group flex-column' id='serverTypesULRight'>"+  
+										 
 									"</ul>"+
 								"</div>"+
 							"</div>"+
 						"</div>"+
 						"<div class='card-footer text-muted'>"+
-							"All 7 cameras online"+
+						"<div class='container'>"+
+  "<div class='row'>"+
+    "<div class='col-sm' id='GPSStatus'>"+
+      "One of three columns"+
+    "</div>"+
+    "<div class='col-sm' id='SystemStatus'>"+
+      "One of three columns"+
+    "</div>"+
+    "<div class='col-sm' id=CameraStatus'>"+
+      "<h5 id='camStat'></h5>"+
+    "</div>"+
+  "</div>"+
+"</div>"+
+						"<h5 class='gpsStatus'></h5>"+
 						"</div>"+
 					"</div>"+
-					"<div class='modal fade' id='exampleModal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>"+
+					"<div class='modal fade' id='exampleModal' aria-hidden='true'>"+
 				   "<div class='modal-dialog modal-lg'>"+
 					 "<div class='modal-content modalWidth'>"+
 					 "<div class='modal-header'>"+
@@ -155,19 +166,33 @@ var maindivHomeHTML = "<div class='card text-center'>"+
 						 "</div>"+
 					   "</div>"+
 					 "</div>"+
-					   
-
-
-
-
-
-
-
+					 
 					   "</div>"+
 					 
 					 "</div>"+
 				   "</div>"+
-				   "</div>"	
+				   "</div>"+
+				   
+				   "<div class='modal' tabindex='-1' id='exampleModal2'>"+
+  "<div class='modal-dialog'>"+
+    "<div class='modal-content'>"+
+      "<div class='modal-header'>"+
+        "<h5 class='modal-title'>Modal title</h5>"+
+        "<button type='button' class='close' data-dismiss='modal' aria-label='Close'>"+
+          "<span aria-hidden='true'>&times;</span>"+
+        "</button>"+
+      "</div>"+
+      "<div class='modal-body'>"+
+	  "<button type='button' class='btn-secondary btn btn-block' id='signIn'>Sign In</button>"+
+	  "<button type='button' class='btn-secondary btn btn-block' id='startShift'>Start Shift</button>"+
+	  "<button type='button' class='btn-secondary btn btn-block' id='endShift'>End Shift</button>"+
+	  "<button type='button' class='btn-secondary btn btn-block' id='logOut'>Log Out</button>"+
+	  "<button type='button' class='btn-secondary btn btn-block' id='ejectDisk'>Eject Disk</button>"+
+      "</div>"+
+      
+    "</div>"+
+  "</div>"+
+"</div>"
 
 
 
@@ -182,13 +207,13 @@ var maincontainer = "<div class='container'>" +
 				"<nav id='sidebarMenu' class='col-md-3 col-lg-2 d-md-block bg-light sidebar collapse'>"+
 					"<div class='sidebar-sticky pt-3'>"+
 						"<ul class='list-group flex-column' id='serverTypesUL'>"+
-							"<button type='button' class='btn-secondary btn btn-block'>Large button</button>"+
-							"<button type='button' class='btn-secondary btn btn-block'>Sign In</button>"+
-							"<button type='button' class='btn-secondary btn btn-block'>Start Shift</button>"+
-							"<button type='button' class='btn-secondary btn btn-block'>End Shift</button>"+
-							"<button type='button' class='btn-secondary btn btn-block'>Log Out</button>"+
-							"<button type='button' class='btn-secondary btn btn-block'>Eject Disk</button>"+
-							"<button type='button' class='btn-secondary btn btn-block'>Settings</button>"
+							"<button type='button' class='btn-secondary btn btn-block btn-block-settings'>Large button</button>"+
+							"<button type='button' class='btn-secondary btn btn-block btn-block-settings'>Sign In</button>"+
+							"<button type='button' class='btn-secondary btn btn-block btn-block-settings'>Start Shift</button>"+
+							"<button type='button' class='btn-secondary btn btn-block btn-block-settings'>End Shift</button>"+
+							"<button type='button' class='btn-secondary btn btn-block btn-block-settings'>Log Out</button>"+
+							"<button type='button' class='btn-secondary btn btn-block btn-block-settings'>Eject Disk</button>"+
+							"<button type='button' class='btn-secondary btn btn-block btn-block-settings'>Settings</button>"
 						"</ul>"+
 					"</div>"+
 				"</nav>"+
