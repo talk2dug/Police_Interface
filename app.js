@@ -20,7 +20,7 @@ var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var sendGPS = 0;
 //Add socket client here.
-var mainServer = require('socket.io-client')('http://10.10.10.3:3000');
+var mainServer = require('socket.io-client')('http://192.168.196.163:3000');
 
 mainServer.on('connect', function(){
 console.log("CONNECTED");
@@ -111,6 +111,7 @@ function calculateHeading(lon, lat) {
     return Heading;
 }
 gps.on('GGA', function(data) {
+    
     if (!data.time)
     return;
     var exec = require('child_process').exec;
@@ -147,8 +148,8 @@ io.on('connection', function(socket) {
 
     mainServer.on('recordingStatus', function(data){
         recordStat = data;
-        console.log("data")
-        console.log(data)
+        //console.log("data")
+        //console.log(data)
         
 
 })

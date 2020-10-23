@@ -1,12 +1,12 @@
-var RallyComputer = io('//192.168.196.74:3000');
-var mainServer = io('//192.168.196.163:3000');
-
+var RallyComputer = io('//127.0.0.1:3000');
+var mainServer = io('//10.10.10.3:3000');
+var driveStatus = "Not Mounted"
 function refreshEventListeners(){     
     $(".btn").on('click', function(e){
         var buttonID = $(e.target).attr('id')
         var innerText = e.target.innerHTML
         RallyComputer.emit('buttonClicked',buttonID )
-        $('.stauts').text(innerText)
+        $('#stauts').text(innerText)
         
         console.log(officerInfo)
         
@@ -58,15 +58,15 @@ function refreshEventListeners(){
                 officerInfo.action = "radioCall"
                 mainServer.emit('action', 'startcall' )
                 mainServer.emit('officerStatus',officerInfo )
-
+                $('#stauts').text('Radio Call')
                 break;
 
             case 'startShift':
-                   
+                mainServer.emit('getDriveStatus','' )
                 $('#serverTypesULLeft').html(landingLeft2)
                 $('#serverTypesULRight').html(landingRight)
                 $('#headerTitle').text("Officer "+badgeNumber + " On Duty")
-                
+                $('#stauts').text('Starting Shift')
                 $('#exampleModal2').modal('hide');
                 officerInfo.shiftStatus = "Started"
                 mainServer.emit('officerStatus',officerInfo )
@@ -74,8 +74,9 @@ function refreshEventListeners(){
                 refreshEventListeners()
             break;
             case 'logOut':
+                mainServer.emit('getDriveStatus','' )
                 $('#headerTitle').text("SPD Video System")
-                
+                $('#stauts').text('Logged Off')
                 $('#exampleModal2').modal('hide');
                 officerInfo.loggedOn = 0;
                 officerInfo.action = 'logOut';
@@ -84,20 +85,21 @@ function refreshEventListeners(){
             break;
             case 'endCall':
                 officerInfo.action = "endCall"
-                $('.stauts').text('On Patrol')
+                $('#stauts').text('On Patrol')
                 mainServer.emit('action','endcall' )
                 console.log(officerInfo)
                 
                 mainServer.emit('officerStatus',officerInfo )
                 break;
             case 'startCall':
-                $('.stauts').text('At Call')
+                $('#stauts').text('At Call')
                 RallyComputer.emit('action', 'startcall' )
                 console.log(officerInfo)
                 
                 break;
             case 'signIn':
-                $('.stauts').text('SIGNING IN')
+                mainServer.emit('getDriveStatus','' )
+                $('#stauts').text('SIGNING IN')
                 $('#exampleModal2').modal('hide');
                 $('#exampleModal').modal('show');
                 mainServer.emit('officerStatus',officerInfo )
@@ -105,17 +107,26 @@ function refreshEventListeners(){
                
                 //RallyComputer.emit('action', 'signin')
                 break;
+                
+                case 'loadDisk':
+                    mainServer.emit('loadDrive','' )
+                    $('#exampleModal2').modal('hide');
+                    break;
+                case 'ejectDisk':
+                    mainServer.emit('ejectDrive','' )
+                    $('#exampleModal2').modal('hide');
+                    break;
             case 'endShift':
                 if(officerInfo.shiftStatus !='Started'){
                     $('#exampleModal2').modal('hide');
-                    $('.stauts').text('Shift Not Started')
+                    $('#stauts').text('Shift Not Started')
                     
                     
                 }
                 else{
                     $('#serverTypesULLeft').html(landingLeft)
                 $('#serverTypesULRight').html('')
-                $('.stauts').text('Shift Ended')
+                $('#stauts').text('Shift Ended')
                 officerInfo.action = "endShift"
                 officerInfo.shiftStatus = "ended"
                 $('#headerTitle').text("Officer "+officerInfo.badgeNumber + " Off Duty")
@@ -170,11 +181,12 @@ function sendTime(){
 }
 
 $(function() {
-    
+
     mainServer.on('connect', function(){
         
         $('#SystemStatus').text("\u2714 System Online")
         $('#SystemStatus').css( "color", "green" )
+        mainServer.emit('getDriveStatus','' )
         mainServer.on('disconnect', function(){
             $('#SystemStatus').text("\u274C System Offline")
             $('#SystemStatus').css( "color", "red" )
@@ -187,7 +199,11 @@ $(function() {
     
     $('#SystemStatus').text("\u274C System Offline").css( "color", "red" )
 
-    
+    mainServer.on('driveStatus',function(data) {
+console.log(data)
+driveStatus = data
+$('#drivestatus').text("Drive is " + driveStatus);
+    })
    RallyComputer.on('state', function(state) {
         console.log(state.time)
         
@@ -248,9 +264,15 @@ $(function() {
       });
       $('#status').text("....Please Log On....")
       RallyComputer.on('recordingStatus', function(state) {
-        console.log("recording: " + state)
+       console.log('recordingStatus' + state)
+       
+            $('#camStat').text(state);
+
+
+         
         
-        $('#camStat').text(state);
+        
+        
         //$('#camStat').css( "color", "red" )
        
     })

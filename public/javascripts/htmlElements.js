@@ -65,8 +65,9 @@ var maindivHomeHTML = "<div class='card text-center'>"+
 										
 										"</br>"+
 										"<h2 class='stauts' id='status'>Not Logged In</h2>"+
+										"<h5 class='stauts' id='drivestatus'>Drive Not Mounted</h5>"+
 										
-										"</br>"+
+										
 										
 											"<h3 class='currentTime'></h3>"+
 										"</div>"+
@@ -85,13 +86,13 @@ var maindivHomeHTML = "<div class='card text-center'>"+
 						"<div class='container'>"+
   "<div class='row'>"+
     "<div class='col-sm' id='GPSStatus'>"+
-      "One of three columns"+
+      "GPS NOT CONNECTED"+
     "</div>"+
     "<div class='col-sm' id='SystemStatus'>"+
       "One of three columns"+
     "</div>"+
     "<div class='col-sm' id=CameraStatus'>"+
-      "<h5 id='camStat'></h5>"+
+      "<h5 id='camStat'>Not Recording</h5>"+
     "</div>"+
   "</div>"+
 "</div>"+
@@ -182,12 +183,28 @@ var maindivHomeHTML = "<div class='card text-center'>"+
           "<span aria-hidden='true'>&times;</span>"+
         "</button>"+
       "</div>"+
-      "<div class='modal-body'>"+
-	  "<button type='button' class='btn-secondary btn btn-block' id='signIn'>Sign In</button>"+
-	  "<button type='button' class='btn-secondary btn btn-block' id='startShift'>Start Shift</button>"+
-	  "<button type='button' class='btn-secondary btn btn-block' id='endShift'>End Shift</button>"+
-	  "<button type='button' class='btn-secondary btn btn-block' id='logOut'>Log Out</button>"+
-	  "<button type='button' class='btn-secondary btn btn-block' id='ejectDisk'>Eject Disk</button>"+
+	  "<div class='modal-body'>"+
+	  "<div class='container modal-container'>"+
+  "<div class='row'>"+
+    "<div class='col-sm'>"+
+	"<button type='button' class='btn-secondary btn btn-block button-modal' id='signIn'>Sign In</button>"+
+	  "<button type='button' class='btn-secondary btn btn-block button-modal' id='startShift'>Start Shift</button>"+
+	  "<button type='button' class='btn-secondary btn btn-block button-modal' id='endShift'>End Shift</button>"+
+    "</div>"+
+    "<div class='col-sm'>"+
+	"<button type='button' class='btn-secondary btn btn-block button-modal' id='logOut'>Log Out</button>"+
+	  "<button type='button' class='btn-secondary btn btn-block button-modal' id='ejectDisk'>Eject Disk</button>"+
+	  "<button type='button' class='btn-secondary btn btn-block button-modal' id='loadDisk'>Load Disk</button>"+
+    "</div>"+
+    
+  "</div>"+
+"</div>"+
+
+
+
+
+	  
+	 
       "</div>"+
       
     "</div>"+
