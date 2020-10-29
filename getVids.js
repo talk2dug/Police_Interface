@@ -2,6 +2,7 @@
 const { Worker, isMainThread, parentPort, workerData } = require('worker_threads');
 const min = 2;
 let primes = [];
+
 function generatePrimes(start, range) {
   let isPrime = true;
   let end = start + range;
