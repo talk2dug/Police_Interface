@@ -6,30 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
-    "angles": "*",
-    "body-parser": "*",
-    "child_pty": "*",
-    "chokidar": "^3.4.1",
-    "cookie-parser": "*",
-    "debug": "*",
-    "express": "*",
-    "geolib": "*",
-    "gps": "*",
-    "jQuery": "*",
-    "jade": "*",
-    "jquery": "*",
-    "jsdom": "*",
-    "moment": "*",
-    "mongodb": "*",
-    "mongoose": "*",
-    "morgan": "*",
-    "openweather-node": "*",
-    "serialport": "*",
-    "serve-favicon": "*",
-    "socket.io": "*",
-    "socket.io-client": "*",
-    "tingodb": "*",
-    "tungus": "*",
-    "urllib": "*"
+
+
   }
 }

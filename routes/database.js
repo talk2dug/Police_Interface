@@ -6,13 +6,7 @@ var Schema = mongoose.Schema;
 var $
 var moment = require('moment');
 
-require("jsdom").env("", function(err, window) {
-    if (err) {
-        return;
-    }
 
-    $ = require("jquery")(window);
-});
 var GPS_LogsSchema = new Schema({
     'event': String,
     'dateTime': Date,
