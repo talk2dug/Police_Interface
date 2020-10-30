@@ -1,5 +1,5 @@
-var RallyComputer = io('//127.0.0.1:3000');
-var mainServer = io('//10.10.10.3:3000');
+var RallyComputer = io('//192.168.196.22:3000');
+var mainServer = io('//192.168.196.163:3000');
 var driveStatus = "Not Mounted"
 function refreshEventListeners(){     
     $(".btn").on('click', function(e){
@@ -192,36 +192,21 @@ $(function() {
             $('#SystemStatus').css( "color", "red" )
            
             });
+
+            
         });
         
     $('#mainDIV').html(maindivHomeHTML);
     refreshEventListeners()
     
     $('#SystemStatus').text("\u274C System Offline").css( "color", "red" )
-
+    
     mainServer.on('driveStatus',function(data) {
 console.log(data)
 driveStatus = data
 $('#drivestatus').text("Drive is " + driveStatus);
     })
-   RallyComputer.on('state', function(state) {
-        console.log(state.time)
-        
-        var utcDate = new Date(state.time);
-        var localDate = new Date(utcDate);
-        var datestring = state.time
-        $('.currentTime').text(moment(localDate).format('HH:mm:ss'));
-        console.log(moment(localDate).format('HH:mm:ss'))
-        if(state.quality==='fix'){
-            
-        $('#GPSStatus').text("\u2714 GPS Connected");
-        $('#GPSStatus').css( "color", "green" )
-        }
-        if(state.quality!='fix'){
-            $('#GPSStatus').text("\u2716 GPS LOST");
-            $('#GPSStatus').css( "color", "red" )
-            }
-        })
+   
 
         
     
@@ -276,6 +261,25 @@ $('#drivestatus').text("Drive is " + driveStatus);
         //$('#camStat').css( "color", "red" )
        
     })
+
+    mainServer.on('state', function(state) {
+        console.log(state)
+        
+        var utcDate = new Date(state.time);
+        var localDate = new Date(utcDate);
+        var datestring = state.time
+        $('.currentTime').text(moment(localDate).format('HH:mm:ss'));
+        
+        if(state.quality==='fix'){
+            
+        $('#GPSStatus').text("\u2714 GPS Connected");
+        $('#GPSStatus').css( "color", "green" )
+        }
+        if(state.quality!='fix'){
+            $('#GPSStatus').text("\u2716 GPS LOST");
+            $('#GPSStatus').css( "color", "red" )
+            }
+        })
 });
 
 

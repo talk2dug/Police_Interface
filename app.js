@@ -1,14 +1,11 @@
 var exec = require('child_process').exec;
 var fs = require('fs');
 
-<<<<<<< HEAD
-=======
 var GPSarray = {};
 
 var prevLAT;
 var prevLAT;
 
->>>>>>> 97549dce84e68fcd4d881d205134aa3426802471
 var ip = "";
 var express = require('express');
 var path = require('path');
@@ -24,10 +21,7 @@ var io = require('socket.io')(server);
 var sendGPS = 0;
 //Add socket client here.
 var mainServer = require('socket.io-client')('http://192.168.196.163:3000');
-<<<<<<< HEAD
-=======
 
->>>>>>> 97549dce84e68fcd4d881d205134aa3426802471
 mainServer.on('connect', function(){
 console.log("CONNECTED");
 
@@ -38,14 +32,11 @@ mainServer.on('disconnect', function(){
 
 mainServer.removeAllListeners();
 
-<<<<<<< HEAD
-=======
 });
 var recordStat = 0
 var geolib = require('geolib');
 var mongoose = require('mongoose');
 var MongoClient = require('mongodb').MongoClient;
->>>>>>> 97549dce84e68fcd4d881d205134aa3426802471
 var $
 var moment = require('moment')
 
@@ -83,63 +74,17 @@ app.use(function(req, res, next) {
 
 
 
-<<<<<<< HEAD
 
 var os = require('os');
 var ifaces = os.networkInterfaces();
 var stopType = ''
-=======
-const parser = port.pipe(new Readline({ delimiter: '\r\n' }))
-parser.on('data', function(data) {
-    gps.update(data);
-  
-})
-function calculateHeading(lon, lat) {
-    var Heading = 0;
-    var angles = require('angles');
-    Heading = GPS.Heading(prevLAT, prevLAT, lat, lon);
-    Heading = Heading.toFixed(0)
-    prevLAT = lat;
-    prevLON = lon;
-    return Heading;
-}
-gps.on('GGA', function(data) {
-    
-    if (!data.time)
-    return;
-    var exec = require('child_process').exec;
-  exec('date -s "' + data.time.toString() + '"', function(error, stdout, stderr) {
-    if (error) throw error;
-    // Clock should be set now, exit
-    //console.log("Set time to " + data.time.toString());
-    //process.exit();
-  });
-    var headingDir = calculateHeading(data.lon, data.lat)
-    GPSarray['lon'] = data.lon
-    GPSarray['lat'] = data.lat
-    GPSarray['heading'] = headingDir
-    GPSarray['satsActive'] = data.satelites
-    GPSarray['alt'] = data.alt
-    GPSarray['time'] = data.time
-    GPSarray['quality'] = data.quality
-
-    if (gps.state.speed != null) {GPSarray['speed'] = gps.state.speed.toFixed(2)}
-    if (gps.state.speed == null) {GPSarray['speed'] = 0}
-    //console.log(GPSarray)
-    mainServer.emit('state',GPSarray)
-    if(sendGPS===1){
-        mainServer.emit('gpscarGPS', GPSarray)
-    }
-io.emit('state',GPSarray )
-io.emit('recordingStatus',recordStat )
-});
-
-
-
->>>>>>> 97549dce84e68fcd4d881d205134aa3426802471
 io.on('connection', function(socket) {
 
+    socket.on("gpsData", function(data){
+        console.log(data)
 
+
+    })
     mainServer.on('recordingStatus', function(data){
         recordStat = data;
         //console.log("data")
@@ -195,10 +140,7 @@ function interval(func, wait, times) {
 };
 
 
-<<<<<<< HEAD
     var startMoving = null;
-=======
->>>>>>> 97549dce84e68fcd4d881d205134aa3426802471
     
     io.on('disconnect', function(socket) {})
     io.emit('ip', ip)
